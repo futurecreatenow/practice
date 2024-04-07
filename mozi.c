@@ -1,16 +1,20 @@
 #include <stdio.h>
+#include <process.h>
 
-int str_length(const char *s){
-    int len = 0;
-    while(*s++){
-        len++;
+void print(int num,const char **pp){
+    for (int i = 0; i < num; i++)
+    {
+        printf("%s\n",pp[i]);
     }
-    return len;
+    
 }
 int main(void){
-    char str[128];
-    printf("Input mozi\n");
-    scanf("%s",str);
-    printf("mozi>>>%s_%d\n",str,str_length(str));
+    const char * p[] = {
+        "ABC",
+        "DEF",
+        "GHI",
+    };
+    int num = sizeof(p) /sizeof(p[0]);
+    print(num,p);
     return 0;
 }
