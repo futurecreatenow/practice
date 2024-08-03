@@ -57,11 +57,16 @@ void get_string(void){
 
 void count_string(void){
 	int i = 0;
+	int moji_kind ,moji_num = 0;
 	for(i = 0;i < STRING_LENGTH;i++){
 		if(array[i] != 0){
-			printf("%c>>>%d",i,array[i]);
+			printf("%c>>>%d\n",i,array[i]);
+			moji_kind++;
+			moji_num += array[i];
 		}
 	}
+	printf("moji_kind>>>%d\n",moji_kind);
+	printf("moji_num>>>%d\n",moji_num);
 }
 int main(void){
 	init();
