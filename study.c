@@ -7,16 +7,17 @@
 #define NUM_CHAR_START '0'
 #define NUM_CHAR_END '9'
 
-// プロトタイプ宣言
-void practice(void);// 練習用関数
-void init(void);//文字列配列の初期化
-void get_moji(void);//一文字だけ標準入力で文字を格納する
-void get_string(void);//標準入力で文字列を格納する
-void count_string(void);//文字のカウント
-
 //グローバル変数宣言
 int array[STRING_LENGTH];
 char ch;
+int moji_kind = 0;
+int moji_num = 0;
+
+// プロトタイプ宣言
+void practice(void);// 練習用関数
+void init(void);//文字列配列の初期化
+void get_string(void);//標準入力で文字列を格納する
+void count_string(void);//入力した文字の頻度計算
 
 // 練習用関数
 void practice(void){
@@ -30,13 +31,6 @@ void init(void){
 	for(i = 0;i<STRING_LENGTH;i++){
 		array[i] = 0;
 	}
-}
-//一文字だけ標準入力で文字を格納する
-void get_moji(void){
-	char moji;
-	moji = getchar();
-	printf("get moji>>%c\n",moji);
-
 }
 
 //標準入力で文字列を格納する
@@ -55,9 +49,9 @@ void get_string(void){
 	}
 }
 
+//入力した文字の頻度計算
 void count_string(void){
 	int i = 0;
-	int moji_kind ,moji_num = 0;
 	for(i = 0;i < STRING_LENGTH;i++){
 		if(array[i] != 0){
 			printf("%c>>>%d\n",i,array[i]);
@@ -68,11 +62,10 @@ void count_string(void){
 	printf("moji_kind>>>%d\n",moji_kind);
 	printf("moji_num>>>%d\n",moji_num);
 }
+
 int main(void){
 	init();
 	get_string();
-	// get_moji();
-	//practice();
 	count_string();
 	return 0;
 }
