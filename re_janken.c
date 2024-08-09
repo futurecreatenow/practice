@@ -11,6 +11,12 @@ enum re{
     FINISH,
     RETRY,
 };
+typedef struct TOTAL{
+    int t_init;
+    int t_draw;
+    int t_win;
+    int t_lose;
+｝TOTAL;
 typedef enum{
     ROCK,
     SCISSORS,
@@ -24,6 +30,7 @@ typedef enum{
 typedef struct DATA{
     RESULT result;
     HAND hand;
+    TOTAL score;
     int retry;
 }DATA;
 
