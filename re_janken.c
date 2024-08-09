@@ -7,11 +7,6 @@
 #define STR_LENGTH 10
 #define INIT_NUM -1
 
-enum num{
-    ZERO,
-    ONE,
-    TWO,
-};
 enum re{
     FINISH,
     RETRY,
@@ -44,11 +39,11 @@ int re(DATA *me);//続けるか終了するか
 
 //数字(0から2)を出し手(ROCK,SCISSORS,PAPER)に変換する
 char *num_to_hand(int num){
-    if (num == ZERO)
+    if (num == ROCK)
     {
         strcpy(hand_char,"ROCK");
     }
-    else if (num == ONE)
+    else if (num == SCISSORS)
     {
         strcpy(hand_char,"SCISSORS");
     }
@@ -73,7 +68,7 @@ void set_hand(DATA *me,DATA *you){
     you->hand = INIT_NUM;
 
     //自分の手を決定する
-    while ((me->hand < ZERO) || (me->hand > TWO))
+    while ((me->hand < ROCK) || (me->hand > PAPER))
     {
         printf("########select########\n");
         printf("select your hand\n");
