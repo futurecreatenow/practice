@@ -1,3 +1,8 @@
+/*
+最低限のやりたいことは達成されている。
+単語一覧ファイルの単語が、
+入力ファイルにどれぐらい含まれているかを判定する
+*/
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -57,7 +62,7 @@ int main(void){
 	}
 	fclose(fkey);
 
-    //出力データの出力
+    //単語一覧ファイルの出力
     int key_i;
     printf("\n");
     printf("### keyword ###\n");
@@ -81,7 +86,6 @@ int main(void){
     while(fgets(str, N, fp) != NULL) {
         removeNewline(str);
         strcpy(fregtable.table[fregtable.wordnext].wordst,str);
-        // fregtable.table[fregtable.wordnext].frest = INIT_FRE;
         fregtable.wordnext++;
 	}
 	fclose(fp);
@@ -96,32 +100,33 @@ int main(void){
     }
 
 
-    // //文字列が同じか否かの判定
-    // printf("\n");
-    // printf("JUDGE\n");
-    // int keyjudge_i;
-    // int inputjudge_i;
-    // for (keyjudge_i = 0; keyjudge_i < fregtable.keynext; keyjudge_i++)
-    // {
-    //     for(inputjudge_i = 0;inputjudge_i < fregtable.wordnext;inputjudge_i++){
-    //         if (strcmp(fregtable.keytable[keyjudge_i].keywords,fregtable.table[inputjudge_i].wordst) == YES)
-    //         {
-    //             fregtable.table[inputjudge_i].frest++;
-    //         }
-    //         else{
-    //             continue;
-    //         }
-    //     }       
-    // }
+    //文字列が同じか否かの判定
+    printf("\n");
+    printf("*** Now JUDGEING ***\n");
+    printf("\n");
+    int keyjudge_i;
+    int inputjudge_i;
+    for(inputjudge_i = 0;inputjudge_i < fregtable.wordnext;inputjudge_i++){
+        for(keyjudge_i = 0;keyjudge_i<fregtable.keynext;keyjudge_i++){
+            if (strcmp(fregtable.keytable[keyjudge_i].keywords,fregtable.table[inputjudge_i].wordst) == YES)
+            {
+                fregtable.keytable[keyjudge_i].frest++;
+            }
+            else{
+                continue;
+            }
+        }
+    }
 
-    // //頻度出力
-    // int judge_i;
-    // printf("\n");
-    // printf("### input data ###\n");
-    // printf("(input word:frequency)\n");
-    // for(judge_i = 0;judge_i < fregtable.wordnext;judge_i++){
-    //     printf("(%s,%d)\n",fregtable.table[judge_i].wordst,fregtable.table[judge_i].frest);
-    // }
+
+    //単語一覧ファイルの出力（単語の頻度が０回であるものも出力する）
+    int key_ii;
+    printf("\n");
+    printf("### keyword ###\n");
+    printf("(No.:keyword:frequency)\n");
+    for(key_ii = 0;key_ii < fregtable.keynext;key_ii++){
+        printf("(%d:%s:%d)\n",key_ii + 1,fregtable.keytable[key_ii].keywords,fregtable.keytable[key_ii].frest);
+    }
 
     return 0;
 }

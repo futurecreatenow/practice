@@ -1,7 +1,11 @@
 /*
-作成途中であり、間違ったコーディングである。
-しかし、考え方は参考になる
+状況：最低限のやりたいことは達成されている。
+　　　単語一覧ファイルの単語が、
+　　　入力ファイルにどれぐらい含まれているかを判定する
+
+工夫点：リスト構造にしてデータを管理
 */
+
 
 #include <stdio.h>
 #include <string.h>
@@ -11,17 +15,19 @@
 #define input_wordlength 10
 #define INIT_FRE 0
 #define N 256
-enum wordjudge {YES};
+enum wordjudge {JUDGEYES};
+typedef enum {NO, YES} boolean;
 
 //単語の一覧を格納する構造体
 typedef struct KEYWORD{
     char keywords[data_wordlength];
+    int frest;
+    struct KEYWORD *nest;
 }KEYWORD;
 
 //入力された文字と頻度を格納する構造体
 typedef struct FREG{
     char wordst[input_wordlength];
-    int frest;
 }FREG;
 
 //単語表（全ての情報）
@@ -32,7 +38,10 @@ typedef struct FREGTABLE{
     int keynext;
 }FREGTABLE;
 
-//ファイルから読み込んだデータの行末の改行コードを削除する
+/*
+概要：ファイルから読み込んだデータの行末の改行コードを削除する
+戻り値：なし
+*/
 void removeNewline(char *str) {
     char *newline;
     if ((newline = strchr(str, '\n')) != NULL) {
@@ -40,6 +49,19 @@ void removeNewline(char *str) {
     }
 }
 
+/*
+概要：リスト構造を作ることができるか否かを判定する関数
+戻り値：入力ファイルの単語が２つ以上単語一覧ファイルに存在したときにYESを返す。
+*/
+boolean Listinit(FREGTABLE *fre){
+    int count= 0;
+    for(int i = 0;i < fre->keynext;i++){
+        if(fre->keytable[i].frest > INIT_FRE){
+            count++;
+        }
+    }
+    if(count >= 2)return YES;else return NO;
+}
 
 int main(void){
     FREGTABLE fregtable;
@@ -57,17 +79,18 @@ int main(void){
     while(fgets(keystr, N, fkey) != NULL) {
         removeNewline(keystr);
         strcpy(fregtable.keytable[fregtable.keynext].keywords,keystr);
+        fregtable.keytable[fregtable.keynext].frest = INIT_FRE;
         fregtable.keynext++;
 	}
 	fclose(fkey);
 
-    //出力データの出力
+    //単語一覧ファイルの出力
     int key_i;
     printf("\n");
     printf("### keyword ###\n");
-    printf("(No.:keyword)\n");
+    printf("(No.:keyword:frequency)\n");
     for(key_i = 0;key_i < fregtable.keynext;key_i++){
-        printf("(%d:%s)\n",key_i + 1,fregtable.keytable[key_i].keywords);
+        printf("(%d:%s:%d)\n",key_i + 1,fregtable.keytable[key_i].keywords,fregtable.keytable[key_i].frest);
     }
 
 
@@ -85,7 +108,6 @@ int main(void){
     while(fgets(str, N, fp) != NULL) {
         removeNewline(str);
         strcpy(fregtable.table[fregtable.wordnext].wordst,str);
-        fregtable.table[fregtable.wordnext].frest = INIT_FRE;
         fregtable.wordnext++;
 	}
 	fclose(fp);
@@ -102,30 +124,35 @@ int main(void){
 
     //文字列が同じか否かの判定
     printf("\n");
-    printf("JUDGE\n");
+    printf("*** Now JUDGEING ***\n");
+    printf("\n");
     int keyjudge_i;
     int inputjudge_i;
-    for (keyjudge_i = 0; keyjudge_i < fregtable.keynext; keyjudge_i++)
-    {
-        for(inputjudge_i = 0;inputjudge_i < fregtable.wordnext;inputjudge_i++){
-            if (strcmp(fregtable.keytable[keyjudge_i].keywords,fregtable.table[inputjudge_i].wordst) == YES)
+    for(inputjudge_i = 0;inputjudge_i < fregtable.wordnext;inputjudge_i++){
+        for(keyjudge_i = 0;keyjudge_i<fregtable.keynext;keyjudge_i++){
+            if (strcmp(fregtable.keytable[keyjudge_i].keywords,fregtable.table[inputjudge_i].wordst) == JUDGEYES)
             {
-                fregtable.table[inputjudge_i].frest++;
+                fregtable.keytable[keyjudge_i].frest++;
             }
             else{
                 continue;
             }
-        }       
+        }
     }
 
-    //頻度出力
-    int judge_i;
+
+    //単語一覧ファイルの出力（単語の頻度が０回であるものも出力する）
+    int key_ii;
     printf("\n");
-    printf("### input data ###\n");
-    printf("(input word:frequency)\n");
-    for(judge_i = 0;judge_i < fregtable.wordnext;judge_i++){
-        printf("(%s,%d)\n",fregtable.table[judge_i].wordst,fregtable.table[judge_i].frest);
+    printf("### keyword ###\n");
+    printf("(No.:keyword:frequency)\n");
+    for(key_ii = 0;key_ii < fregtable.keynext;key_ii++){
+        printf("(%d:%s:%d)\n",key_ii + 1,fregtable.keytable[key_ii].keywords,fregtable.keytable[key_ii].frest);
     }
 
+    if (Listinit(&fregtable) == YES){
+        printf("can list structer\n");
+    }
+    else printf("can not list structer\n");
     return 0;
 }
