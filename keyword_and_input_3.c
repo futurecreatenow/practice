@@ -2,8 +2,8 @@
 状況：最低限のやりたいことは達成されている。
 　　　単語一覧ファイルの単語が、
 　　　入力ファイルにどれぐらい含まれているかを判定する
-
-工夫点：リスト構造にしてデータを管理
+　　　⇒リスト構造をうまく作ることができず。。。中断
+　　　⇒単語の頻度をアルファベット順と頻度順に並べ替えるプログラムを作成する。
 */
 
 
@@ -62,6 +62,15 @@ boolean Listinit(FREGTABLE *fre){
     }
     if(count >= 2)return YES;else return NO;
 }
+
+
+
+void Listcreate(FREGTABLE *fre){
+    printf("\n");
+    printf("#################\n");
+    printf("can list structer\n");
+}
+
 
 int main(void){
     FREGTABLE fregtable;
@@ -150,8 +159,10 @@ int main(void){
         printf("(%d:%s:%d)\n",key_ii + 1,fregtable.keytable[key_ii].keywords,fregtable.keytable[key_ii].frest);
     }
 
+
+    //以下はリスト構造するための処理であるが、できていない（やり方が思いつかない）
     if (Listinit(&fregtable) == YES){
-        printf("can list structer\n");
+        Listcreate(&fregtable);
     }
     else printf("can not list structer\n");
     return 0;
