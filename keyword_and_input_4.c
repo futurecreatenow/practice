@@ -1,10 +1,10 @@
-/*
+/***********************************************************************
 状況：最低限のやりたいことは達成されている。
 　　　単語一覧ファイルの単語が、
 　　　入力ファイルにどれぐらい含まれているかを判定する
 　　　⇒リスト構造をうまく作ることができず。。。中断
 　　　⇒単語の頻度をアルファベット順と頻度順に並べ替えるプログラムを作成する。
-*/
+***********************************************************************/
 
 
 #include <stdio.h>
@@ -18,6 +18,9 @@
 enum wordjudge {JUDGEYES};
 typedef enum {NO, YES} boolean;
 
+/***********************************************************************
+STRUCTER
+***********************************************************************/
 //入力された文字と頻度を格納する構造体
 typedef struct KEYWORD{
     char keywords[data_wordlength];
@@ -40,10 +43,10 @@ typedef struct FREGTABLE{
     int newnext;
 }FREGTABLE;
 
-/*
+/**********************************************************************
 概要：ファイルから読み込んだデータの行末の改行コードを削除する
 戻り値：なし
-*/
+**********************************************************************/
 void removeNewline(char *str) {
     char *newline;
     if ((newline = strchr(str, '\n')) != NULL) {
@@ -51,10 +54,10 @@ void removeNewline(char *str) {
     }
 }
 
-/*
+/**********************************************************************
 概要：リスト構造を作ることができるか否かを判定する関数
 戻り値：入力ファイルの単語が２つ以上単語一覧ファイルに存在したときにYESを返す。
-*/
+**********************************************************************/
 // boolean Listinit(FREGTABLE *fre){
 //     int count= 0;
 //     for(int i = 0;i < fre->keynext;i++){
@@ -99,9 +102,9 @@ int main(void){
     int key_i;
     printf("\n");
     printf("### keyword ###\n");
-    printf("(No.:keyword:frequency)\n");
+    printf("(keyword:frequency)\n");
     for(key_i = 0;key_i < fregtable.keynext;key_i++){
-        printf("(%d:%s:%d)\n",key_i + 1,fregtable.keytable[key_i].keywords,fregtable.keytable[key_i].frest);
+        printf("(%s:%d)\n",fregtable.keytable[key_i].keywords,fregtable.keytable[key_i].frest);
     }
 
 
@@ -127,9 +130,9 @@ int main(void){
     int input_i;
     printf("\n");
     printf("### input data ###\n");
-    printf("(No.:inputword)\n");
+    printf("(inputword)\n");
     for(input_i = 0;input_i < fregtable.wordnext;input_i++){
-        printf("(%d,%s)\n",input_i + 1,fregtable.table[input_i].wordst);
+        printf("(%s)\n",fregtable.table[input_i].wordst);
     }
 
 
@@ -156,9 +159,9 @@ int main(void){
     int key_ii;
     printf("\n");
     printf("### keyword ###\n");
-    printf("(No.:keyword:frequency)\n");
+    printf("(keyword:frequency)\n");
     for(key_ii = 0;key_ii < fregtable.keynext;key_ii++){
-        printf("(%d:%s:%d)\n",key_ii + 1,fregtable.keytable[key_ii].keywords,fregtable.keytable[key_ii].frest);
+        printf("(%s:%d)\n",fregtable.keytable[key_ii].keywords,fregtable.keytable[key_ii].frest);
     }
 
     //頻度が1以上の単語を新たな構造体にデータを移行する
@@ -170,7 +173,7 @@ int main(void){
     {
         if (fregtable.keytable[ii].frest >= 1)
         {
-            printf("(%d:%s:%d)\n",ii + 1,fregtable.keytable[ii].keywords,fregtable.keytable[ii].frest);
+            printf("(%s:%d)\n",fregtable.keytable[ii].keywords,fregtable.keytable[ii].frest);
             strcpy(fregtable.newtable[fregtable.newnext].keywords,fregtable.keytable[ii].keywords);
             fregtable.newtable[fregtable.newnext].frest = fregtable.keytable[ii].frest;
             fregtable.newnext++;
@@ -178,15 +181,30 @@ int main(void){
         
     }
     
-    //新たな頻度表の構造体の出力
+    //頻度順に並び替え
+    ii = 0;
+    int iii;
+    printf("\n");
+    for (ii = 0; ii < fregtable.newnext - 1; ii++)
+    {
+        for(iii = ii + 1;iii < fregtable.newnext;iii++){
+            if (fregtable.newtable[ii].frest > fregtable.newtable[iii].frest)
+            {
+                KEYWORD swap;
+                swap = fregtable.newtable[ii];
+                fregtable.newtable[ii] = fregtable.newtable[iii];
+                fregtable.newtable[iii] = swap;
+            }
+        }
+    }
+    //頻度順もしくはアルファベット順に並び替え後の構造体の出力
     ii = 0;
     printf("\n");
-    printf("### new structer ###\n");
+    printf("### swap new structer ###\n");
     for (ii = 0; ii < fregtable.newnext; ii++)
     {
-        printf("(%d:%s:%d)\n",ii + 1,fregtable.newtable[ii].keywords,fregtable.newtable[ii].frest);
+        printf("(%s:%d)\n",fregtable.newtable[ii].keywords,fregtable.newtable[ii].frest);
     }
-    
     // //以下はリスト構造するための処理であるが、できていない（やり方が思いつかない）
     // if (Listinit(&fregtable) == YES){
     //     Listcreate(&fregtable);
