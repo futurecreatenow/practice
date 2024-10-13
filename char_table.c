@@ -62,7 +62,7 @@ void CreateNewCT(FREGTABLE *fregtable){
 **********************************************************************/
 void SORTChar(FREGTABLE *fregtable){
     int i,j;
-    for (int i = 0; i < fregtable->newnext - 1; i++)
+    for (i = 0; i < fregtable->newnext - 1; i++)
     {
         for(j = i + 1;j < fregtable->newnext;j++){
             if (strcmp(fregtable->newtable[i].keywords,fregtable->newtable[j].keywords)> 0)
