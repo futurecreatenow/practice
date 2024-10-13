@@ -32,11 +32,11 @@ void CTPut(FREGTABLE *fregtable){
 }
 
 /**********************************************************************
-関数名：CREATENEWCT
+関数名：CreateNewCT
 概要：頻度が1以上の単語を新たな構造体に格納する
 戻り値：なし
 **********************************************************************/
-void CREATENEWCT(FREGTABLE *fregtable){
+void CreateNewCT(FREGTABLE *fregtable){
     int i;
     fregtable->newnext = 0;
     printf("\n");

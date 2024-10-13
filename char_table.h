@@ -18,7 +18,6 @@ STRUCTER
 typedef struct KEYWORD{
     char keywords[data_wordlength];
     int frest;
-    struct KEYWORD *nest;
 }KEYWORD;
 
 //単語の一覧を格納する構造体
@@ -39,7 +38,7 @@ typedef struct FREGTABLE{
 FUNCTION PROTOTYPE
 ***********************************************************************/
 extern void CTPut(FREGTABLE *fregtable);
-extern void CREATENEWCT(FREGTABLE *fregtable);
+extern void CreateNewCT(FREGTABLE *fregtable);
 extern void SORTChar(FREGTABLE *fregtable);
 extern void SORTFreg(FREGTABLE *fregtable);
 #endif

@@ -13,7 +13,6 @@ INCLUDE
 #include "char_table.h"
 #include "in.h"
 #include "out.h"
-
 /***********************************************************************
 ENUM
 ***********************************************************************/
@@ -49,7 +48,7 @@ int main(void){
     OUTKeyFreg(&fregtable);
 
     //頻度が1以上の単語を新たな構造体に格納する
-    CREATENEWCT(&fregtable);
+    CreateNewCT(&fregtable);
 
     //頻度かアルファベット順に並び替え
     if (skey == BY_CHAR) SORTChar(&fregtable);

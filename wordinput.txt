@@ -3,3 +3,9 @@ pig
 goat
 goat
 cat
+cat
+pig
+pig
+pig
+cow
+cow
