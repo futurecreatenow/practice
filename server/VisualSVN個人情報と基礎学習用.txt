@@ -1,9 +1,0 @@
-username:terada
-password:Suika628
-
-
-エクスプローラーなどでリポジトリフォルダ（既定ではC:\Repositories）をコピー（カット）し、目的の場所（ここではD:\Data\SVN）にペーストする。
-（なお、リポジトリフォルダ以下にはリポジトリ名のフォルダが並んでるはず。例えば、C:\Repositories\foo_repo、C:\Repositories\mysrcのように。）
-VisualSVN Serverマネージャーを起動する。
-VisualSVN Serverを右クリックしてPropertiesを開く。
-[General/Storage]タブを選び、[Repositories Root:]で適切なパス（ここではD:\Data\SVN)を指定する。
