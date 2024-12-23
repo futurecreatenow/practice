@@ -48,7 +48,7 @@ string get_Token(
 	  acc_string_input_device asid, char c, boolean *skipWS,
 	  boolean *tokScanning, acc_token aTok, string tokSt,
 	  int stmNo) {
-   string scannedString;
+   // string scannedString;
    
    if (c == EOF) {
       INDSet_EOF(asid->accInputDev);
@@ -109,6 +109,21 @@ spp_status sp_Which(acc_string_pair asp) {
      else if (sp.d == null_String) return SN;
      else return SS;
   }
+//   if (strcmp(sp.w,err_String) == 0) {
+//      if (strcmp(sp.d,err_String) == 0) return EE;
+//      else if (strcmp(sp.d,null_String) == 0) return EN;
+//      else return ES;
+//   }
+//   else if (strcmp(sp.w,null_String) == 0) {
+//      if (strcmp(sp.d,err_String) == 0) return NE;
+//      else if (strcmp(sp.d,null_String) == 0) return NN;
+//      else return NS;
+//   }
+//   else {
+//      if (strcmp(sp.d,err_String) == 0) return SE;
+//      else if (strcmp(sp.d,null_String) == 0) return SN;
+//      else return SS;
+//   }
 }
 
 /* function to get token from input device */
@@ -133,6 +148,8 @@ string SIDGet_Token(acc_string_input_device asid) {
    INDReset_EOF(asid->accInputDev);
 
    while (YES) {
+      // 以下のcがget_tokenに渡される。また、input_device.cにINDGet_Char関数の定義記載
+      // 型acc_string_input_deviceはstring_input_device_ds.hに定義記載
       c = INDGet_Char(asid->accInputDev);
 
 #     ifdef ECHO_BACK
@@ -140,10 +157,15 @@ string SIDGet_Token(acc_string_input_device asid) {
 #     endif
 
       if (wordSt == null_String)
-	 wordSt = get_Token(asid, c, &skip4w, &wordScanning,
+      // if (strcmp(wordSt,null_String) == 0)
+	//  wordSt = (asid, c, &skip4w, &wordScanning,
+	// 		    wordTok, wordSt, word_STM_No);
+    wordSt = get_Token(asid, c, &skip4w, &wordScanning,
 			    wordTok, wordSt, word_STM_No);
+   
        
       if (digSt == null_String)
+      // if (strcmp(digSt,null_String) == 0)
 	 digSt = get_Token(asid, c, &skip4d, &digitScanning, 
 	                   digTok, digSt, dig_STM_No);
 

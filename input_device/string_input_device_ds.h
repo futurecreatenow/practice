@@ -13,4 +13,5 @@ typedef struct string_input_device_ {
    int noSTMs;
 } string_input_device, *acc_string_input_device;
 
+// c = INDGet_Char(asid->accInputDev)でaccInputDevを使用している
 #endif

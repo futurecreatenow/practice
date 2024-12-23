@@ -28,4 +28,5 @@ void INDReset_EOF(acc_input_device aid) { aid->eofReached = NO; }
 
 boolean INDEOF_Reached(acc_input_device aid) { return aid->eofReached; }
 
+// 以下のgetc関数はgetchar関数と同様の処理
 char INDGet_Char(acc_input_device aid) { return getc(aid->inputFile); }
