@@ -9,7 +9,7 @@
 #include "../com_args/com_args.h"
 #include "../input_device/string_input_device.h"
 
-static boolean eofReached;
+// static boolean eofReached;
 
 int main(int noComArgs, string ComArgs[]) {
    string w;
@@ -18,7 +18,7 @@ int main(int noComArgs, string ComArgs[]) {
    int nw = 0, y;
    acc_string_input_device inDev;
    FILE *inFile;
-   acc_stm wordSTM, digSTM;
+   // acc_stm wordSTM, digSTM;
 
    static const int no_STMs = 2, word_STM_No = 0, dig_STM_No = 1;
 
@@ -49,5 +49,6 @@ int main(int noComArgs, string ComArgs[]) {
       }
       printf("\n");
    }
+   printf("finish read words");  
    fclose(inFile);
 }
