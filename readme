@@ -1,57 +1,25 @@
 勉強会
-テーマ：単語のログ表示の前に以下のエラーログが出てくる
-########################################################################################
-　Invalid character '5', ignored.
-　Invalid character '0', ignored.
-　Invalid character '4', ignored.
-　Invalid character '0', ignored.
-※表示：変数cの値である
-※半角数字がInvalid characterとなる
+テーマ1:半角数字(変数c)でInvalid characterとなる
+########################################################################################　
 (テキストファイル)
-I am a musician. It has been more than 40 or 50 years since I had started
-to play the guitar.
-I also sing as well as playing it, mostly electric.
-I have played for more than 45 years.
-Nowadays, acostic may be back to my favorite.
-I sixty-six still hava a dream to get a big time.
-Hey men! What's wrong!
+   my barthday is 628.
+(LOG)
+   Invalid character '6', ignored.
+   Invalid character '2', ignored.
+   Invalid character '8', ignored.
 ########################################################################################
 
-Q1 変数cはどのように定義されているのか？？
-　input_device/string_input_device.cのSIDGet_Token関数
+C1 変数c >>>input_device/string_input_device.cのSIDGet_Token関数
    c = INDGet_Char(asid->accInputDev);
-
-Q2 INDGet_Char(asid->accInputDev);とは？？
-　定義場所：input_device/input_device.c
-　定義：char INDGet_Char(acc_input_device aid) { return getc(aid->inputFile); }
-　呼び出し元：/app/main.cのwhile ((w = SIDGet_Token(inDev)) != NULLS
-　引数：asid->accInputDev
-　typedef struct string_input_device_ {
-  　 acc_input_device accInputDev;
-   　acc_stm *stms;
-   　int noSTMs;
-　} string_input_device, *acc_string_input_device;
-
-  
- typedef struct input_device_ {
-   FILE* inputFile;
-   boolean eofReached;
- } input_device, *acc_input_device;
-
-Q3 while ((w = SIDGet_Token(inDev)) != NULLSのinDevの呼び出し元は？？
-　呼び出し元：/app/main.cのacc_string_input_device inDev;
-
-Q4 /app/main.cのacc_string_input_deviceの定義場所は？？
-　定義場所：input_device/string_input_device_ds.h
+C3 while ((w = SIDGet_Token(inDev)) != NULLSのinDevの呼び出し元 >>>/app/main.cのacc_string_input_device inDev;
+C4 /app/main.cのacc_string_input_deviceの定義場所 >>>定義場所:input_device/string_input_device_ds.h
 
 
 
 
 
 
-
-
-テーマ：プログラムミス
+テーマ２：プログラムミス
 ########################################################################################
 input_device/string_input_device.c
 SIDGet_Token関数
@@ -59,13 +27,11 @@ SIDGet_Token関数
 正)wordSt = get_Token(asid, c, &skip4w, &wordScanning,wordTok, wordSt, word_STM_No);
 ########################################################################################
 
-テーマ：カンマの有無による出力結果の違い
+テーマ３：カンマの有無による出力結果の違い>>>カンマを単語としない処理はどのように実装されているのか
 ########################################################################################
-１）zxc vbn asd
+1)zxc vbn asd
    zxc:3 vbn:3
 
-２）zxc vbn asd.
-　　zxc:3 vbn:3 asd:3
+2)zxc vbn asd.
+   zxc:3 vbn:3 asd:3
 ########################################################################################
-
-テーマ：カンマを単語としない処理はどのように実装されているのか
