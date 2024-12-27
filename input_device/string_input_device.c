@@ -51,34 +51,46 @@ string get_Token(
    // string scannedString;
    
    if (c == EOF) {
+      printf("LOG get_Token FUNCTION c if (c == EOF) >>>%c\n",c); //寺田_ログ
       INDSet_EOF(asid->accInputDev);
       if (skipWS) return NULLS;
       else if (*tokScanning) { TOKSet_Scanned(aTok); *tokScanning = NO; }
    }
    else if (STMIs_White_Space(asid->stms[stmNo], c)) {
+      printf("LOG get_Token FUNCTION c else if (STMIs_White_Space(asid->stms[stmNo], c)>>>%c\n",c); //寺田_ログ
       if (*skipWS) ;
       else if (tokScanning) {
-	 *tokScanning = NO; *skipWS = YES;
-	 TOKSet_Scanned(aTok);
+	      *tokScanning = NO; *skipWS = YES;
+	      TOKSet_Scanned(aTok);
       }
    }
    else if (STMIs_Alphabet(asid->stms[stmNo], c)) {
+      printf("LOG get_Token FUNCTION c else if (STMIs_Alphabet(asid->stms[stmNo], c))>>>%c\n",c); //寺田_ログ
+
       if (*skipWS) { *tokScanning = YES; *skipWS = NO; }
+
       if (*tokScanning) {
-	 STMTrans(asid->stms[stmNo], c);
-	 if (STMIs_in_Error_State(asid->stms[stmNo]) == YES) return err_String;
+	      STMTrans(asid->stms[stmNo], c);
+	      if (STMIs_in_Error_State(asid->stms[stmNo]) == YES) {
+            printf("LOG get_Token FUNCTION c if (STMIs_in_Error_State(asid->stms[stmNo]) == YES) >>>%c\n",c); //寺田_ログ
+            return err_String;
+         }
       }
    }
    else
       fprintf(stderr, "Invalid character '%c', ignored.\n", c);
 
    if (TOKIs_Scanned(aTok) == YES) {
-      if (STMIs_in_Final_State(asid->stms[stmNo]) == YES)
-	 return TOKGet_Scanned_Token(aTok);
-      else if (STMIs_in_Error_State(asid->stms[stmNo]) == YES)
-	 return err_String;
+      printf("LOG get_Token FUNCTION if (TOKIs_Scanned(aTok) == YES)\n"); //寺田_ログ
+      if (STMIs_in_Final_State(asid->stms[stmNo]) == YES){
+         printf("LOG get_Token FUNCTION if (STMIs_in_Final_State(asid->stms[stmNo]) == YES)\n"); //寺田_ログ
+	      return TOKGet_Scanned_Token(aTok);
+      }
+         
+      else if (STMIs_in_Error_State(asid->stms[stmNo]) == YES) return err_String;
    }
 
+   printf("LOG get_Token FUNCTION return null_String\n"); //寺田_ログ
    return null_String;
 }
 
@@ -109,29 +121,13 @@ spp_status sp_Which(acc_string_pair asp) {
      else if (sp.d == null_String) return SN;
      else return SS;
   }
-//   if (strcmp(sp.w,err_String) == 0) {
-//      if (strcmp(sp.d,err_String) == 0) return EE;
-//      else if (strcmp(sp.d,null_String) == 0) return EN;
-//      else return ES;
-//   }
-//   else if (strcmp(sp.w,null_String) == 0) {
-//      if (strcmp(sp.d,err_String) == 0) return NE;
-//      else if (strcmp(sp.d,null_String) == 0) return NN;
-//      else return NS;
-//   }
-//   else {
-//      if (strcmp(sp.d,err_String) == 0) return SE;
-//      else if (strcmp(sp.d,null_String) == 0) return SN;
-//      else return SS;
-//   }
 }
 
 /* function to get token from input device */
 
 string SIDGet_Token(acc_string_input_device asid) {
    char c;
-   boolean skip4w = YES, skip4d = YES,
-           wordScanning = NO, digitScanning = NO;
+   boolean skip4w = YES, skip4d = YES,wordScanning = NO, digitScanning = NO;
    acc_token wordTok, digTok;
    string wordSt, digSt;
 
@@ -156,47 +152,37 @@ string SIDGet_Token(acc_string_input_device asid) {
       if (c !=EOF) putchar(c);
 #     endif
 
-      if (wordSt == null_String)
-      // if (strcmp(wordSt,null_String) == 0)
-	//  wordSt = (asid, c, &skip4w, &wordScanning,
-	// 		    wordTok, wordSt, word_STM_No);
-    wordSt = get_Token(asid, c, &skip4w, &wordScanning,
-			    wordTok, wordSt, word_STM_No);
-   
-       
-      if (digSt == null_String)
-      // if (strcmp(digSt,null_String) == 0)
-	 digSt = get_Token(asid, c, &skip4d, &digitScanning, 
-	                   digTok, digSt, dig_STM_No);
+      if (wordSt == null_String) wordSt = get_Token(asid, c, &skip4w, &wordScanning,wordTok, wordSt, word_STM_No);
+      if (digSt == null_String) digSt = get_Token(asid, c, &skip4d, &digitScanning,digTok, digSt, dig_STM_No);
 
       {
-	 acc_string_pair accStPair;
-	 spp_status ss;
+         acc_string_pair accStPair;
+         spp_status ss;
+         
+         accStPair = sp_Create(wordSt, digSt);
+         ss = sp_Which(accStPair);
 
-	 accStPair = sp_Create(wordSt, digSt);
-	 ss = sp_Which(accStPair);
-
-	 switch (ss) {
-	 case EE: /* both error string */
-	    return null_String;
-	 case EN: /* word fail, digit scanning */
-	    break;
-	 case ES: /* word fail, digit scanned */
-	    return digSt;
-	 case NE: /* word scanning, digit fail */
-	    break;
-	 case NN: /* word scanning, digit scanning */
-	    break;
-	 case NS: /* word scanning, digit scanned */
-	    if (skip4w == YES) return digSt; else  break;
-	 case SE: /* word scanned, digit digit fail */
-	    return wordSt;
-	 case SN: /* word scanned, digit scanning */
-	    if (skip4d == YES) return wordSt; else break;
-	 case SS: /* both scanned */
-	    if (strlen(wordSt) > strlen(digSt)) return wordSt;
-	    else return digSt;
-	 }
+         switch (ss) {
+              case EE: /* both error string */
+                 return null_String;
+              case EN: /* word fail, digit scanning */
+                 break;
+              case ES: /* word fail, digit scanned */
+                 return digSt;
+              case NE: /* word scanning, digit fail */
+                 break;
+              case NN: /* word scanning, digit scanning */
+                 break;
+              case NS: /* word scanning, digit scanned */
+                 if (skip4w == YES) return digSt; else  break;
+              case SE: /* word scanned, digit digit fail */
+                 return wordSt;
+              case SN: /* word scanned, digit scanning */
+                 if (skip4d == YES) return wordSt; else break;
+              case SS: /* both scanned */
+                 if (strlen(wordSt) > strlen(digSt)) return wordSt;
+                 else return digSt;
+         }
       }
       if (INDEOF_Reached(asid->accInputDev) == YES) return null_String;
    }
