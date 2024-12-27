@@ -1,19 +1,21 @@
 勉強会
 テーマ1:半角数字(変数c)でInvalid characterとなる
    ########################################################################################　
-   (テキストファイル)
+   #(テキストファイル)
       my barthday is 628.
-   (LOG)
-      Invalid character '6', ignored.
-      Invalid character '2', ignored.
-      Invalid character '8', ignored.
+   #(LOG)
+   #   Invalid character '6', ignored.
+   #   Invalid character '2', ignored.
+   #   Invalid character '8', ignored.
    ########################################################################################
 
-   C1 変数c >>>input_device/string_input_device.cのSIDGet_Token関数
+   ・変数c >>>input_device/string_input_device.cのSIDGet_Token関数
       c = INDGet_Char(asid->accInputDev);
-   C3 while ((w = SIDGet_Token(inDev)) != NULLSのinDevの呼び出し元 >>>/app/main.cのacc_string_input_device inDev;
-   C4 /app/main.cのacc_string_input_deviceの定義場所 >>>定義場所:input_device/string_input_device_ds.h
-
+   ・while ((w = SIDGet_Token(inDev)) != NULLSのinDevの呼び出し元 >>>/app/main.cのacc_string_input_device inDev;
+   ・/app/main.cのacc_string_input_deviceの定義場所 >>>定義場所:input_device/string_input_device_ds.h
+   ・get_Token関数は2度呼ばれている>>>SIDGet_Token関数でwordSt,digSt
+   ・半角数字と半角アルファベットはどちらともnull_Stringを返す
+   ・スペースが入った時はTOKGet_Scanned_Token関数によりスペース前の単語が返る>>>my,birthday,is,628
 
 
 
@@ -21,18 +23,17 @@
 
 テーマ２：プログラムミス
    ########################################################################################
-   input_device/string_input_device.c
-   SIDGet_Token関数
-   誤)wordSt = (asid, c, &skip4w, &wordScanning,wordTok, wordSt, word_STM_No);
-   正)wordSt = get_Token(asid, c, &skip4w, &wordScanning,wordTok, wordSt, word_STM_No);
+   #input_device/string_input_device.c
+   #SIDGet_Token関数
+   #誤)wordSt = (asid, c, &skip4w, &wordScanning,wordTok, wordSt, word_STM_No);
+   #正)wordSt = get_Token(asid, c, &skip4w, &wordScanning,wordTok, wordSt, word_STM_No);
    ########################################################################################
 
 テーマ３：カンマの有無による出力結果の違い>>>カンマを単語としない処理はどのように実装されているのか
    ########################################################################################
-   1)zxc vbn asd
-      zxc:3 vbn:3
-   
-   2)zxc vbn asd.
-      zxc:3 vbn:3 asd:3
+   #1)zxc vbn asd
+   #   zxc:3 vbn:3
+   #
+   #2)zxc vbn asd.
+   #   zxc:3 vbn:3 asd:3
    ########################################################################################
-   
