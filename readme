@@ -16,8 +16,11 @@
    ・get_Token関数は2度呼ばれている>>>SIDGet_Token関数でwordSt,digSt
    ・半角数字と半角アルファベットはどちらともnull_Stringを返す
    ・スペースが入った時はTOKGet_Scanned_Token関数によりスペース前の単語が返る>>>my,birthday,is,628
-
-
+   （結論）
+   ・Invalid character '6', ignored.のようなエラーになる際は以下の時
+      SIDGet_Tokenを呼び出すときに引数がget_Token(asid, c, &skip4w, &wordScanning,wordTok, wordSt, word_STM_No);
+      ※get_Token(asid, c, &skip4d, &digitScanning,digTok, digSt, dig_STM_No);
+       の場合では、Invalid character '6', ignored.のようなエラーにはならない
 
 
 
@@ -37,3 +40,6 @@
    #2)zxc vbn asd.
    #   zxc:3 vbn:3 asd:3
    ########################################################################################
+
+テーマ4:状態遷移のプログラムを理解する
+   ・
