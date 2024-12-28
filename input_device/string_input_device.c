@@ -151,14 +151,16 @@ string SIDGet_Token(acc_string_input_device asid) {
 #     ifdef ECHO_BACK
       if (c !=EOF) putchar(c);
 #     endif
-
+      printf("LOG SIDGet_Token FUNCTION wordSt c>>>%c\n",c); //寺田_ログ
       if (wordSt == null_String) wordSt = get_Token(asid, c, &skip4w, &wordScanning,wordTok, wordSt, word_STM_No);
+      printf("LOG SIDGet_Token FUNCTION digSt c>>>%c\n",c); //寺田_ログ
       if (digSt == null_String) digSt = get_Token(asid, c, &skip4d, &digitScanning,digTok, digSt, dig_STM_No);
+      printf("\n");
 
       {
          acc_string_pair accStPair;
          spp_status ss;
-         
+
          accStPair = sp_Create(wordSt, digSt);
          ss = sp_Which(accStPair);
 
